@@ -1,0 +1,38 @@
+     
+      <mat-card>
+          <mat-card-header> 
+            <mat-card-title> 
+              Premier League
+             <!-- {{Fixtures[0].leagueName }} -->
+            </mat-card-title>
+          </mat-card-header>    
+    <mat-card-content>
+     <table style="width:100%">
+          
+          <tr *ngFor="let Fixture of Fixtures">
+             <td>   
+                <mat-checkbox 
+                  ngModel 
+                  name="TeamNo"  
+                  class="example-margin"
+                  (change)= "teamClick(Fixture.fixtureID,  Fixture.homeTeamNumber ,Fixture.awayTeamNumber, Fixture.homeTeamNumber)">          
+                    {{ Fixture.homeTeamName }} 
+                </mat-checkbox>                                 
+              </td>
+              <td> Vs</td>
+              <td>     
+                <mat-checkbox 
+                  ngModel 
+                  class="example-margin" 
+                  name="TeamNumber"
+                  (change)= "teamClick(Fixture.fixtureID,  Fixture.awayTeamNumber ,Fixture.awayTeamNumber, Fixture.awayTeamNumber)"> 
+                  {{ Fixture.awayTeamName }}   
+                                   
+                </mat-checkbox>
+              </td>
+          </tr>
+        </table> 
+      </mat-card-content>
+    </mat-card>
+
+
