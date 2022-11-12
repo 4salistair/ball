@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs/operators';
 import { Score } from './score.model';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -61,8 +62,8 @@ import { Score } from './score.model';
         
       this.apiBaseSting = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?'
             let headers = new HttpHeaders({    
-                    'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                    'x-rapidapi-key':  '75a664a5cemsh9cce042f81f79e1p18e536jsnba6b7c1aec72'
+                    'x-rapidapi-host': environment.footballAPI.host,
+                    'x-rapidapi-key':  environment.footballAPI.key
             })
           
 
@@ -172,8 +173,8 @@ import { Score } from './score.model';
       this.apiBaseSting = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?'
       let headers = new HttpHeaders({
 
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com',
-                'x-rapidapi-key':  '75a664a5cemsh9cce042f81f79e1p18e536jsnba6b7c1aec72'
+               'x-rapidapi-host': environment.footballAPI.host,
+               'x-rapidapi-key':  environment.footballAPI.key
        })
        
        fixture.forEach( (element: any) => 

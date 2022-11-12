@@ -9,5 +9,11 @@ export const environment = {
     messagingSenderId: '285897019487',
     measurementId: 'G-PVY9K0FHZ1',
   },
+
+  footballAPI: {
+    host: 'api-football-v1.p.rapidapi.com',
+    key:  '75a664a5cemsh9cce042f81f79e1p18e536jsnba6b7c1aec72'
+
+  },
   production: true
 };
