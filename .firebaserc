@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ball-b002e": {
+      "hosting": {
+        "Ball": [
+          "ball-b002e"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ball-b002e"
+  }
+}

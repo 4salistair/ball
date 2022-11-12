@@ -31,22 +31,22 @@ export class ChampCardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.toDateString = 'to='+this.datepipe.transform(Date(), 'yyyy-MM-dd');
-    this.fromDateString = 'from='+this.datepipe.transform(Date(), 'yyyy-MM-dd');
+    // this.toDateString = 'to='+this.datepipe.transform(Date(), 'yyyy-MM-dd');
+    // this.fromDateString = 'from='+this.datepipe.transform(Date(), 'yyyy-MM-dd');
 
-    this.champfixureSubscription = this.apiservice.champfixuresChanged$.subscribe(
-      champFixture => (this.champFixtures = champFixture ))
+    // this.champfixureSubscription = this.apiservice.champfixuresChanged$.subscribe(
+    //   champFixture => (this.champFixtures = champFixture ))
 
-     this.apiservice.apiCall('league=40', 'season=2022', this.fromDateString , this.toDateString )
+    //  this.apiservice.apiCall('league=40', 'season=2022', this.fromDateString , this.toDateString )
  
-      //  console.log('inChampCom')
-      //  console.log(this.champFixtures)
+    //   console.log('inChampCom')
+    //   console.log(this.champFixtures)
  
   }
 
-  teamClick(GameID:string, homeTeamNumber: any, awayTeamNumber: any, pickedTeam: any): void {
+  teamClick(GameID:string, homeTeamNumber: any, awayTeamNumber: any, pickedTeam: any, leagueID: any ): void {
 
-    this.apiservice.teamClick(GameID, homeTeamNumber , awayTeamNumber,  pickedTeam);
+    this.apiservice.teamClick(GameID, homeTeamNumber , awayTeamNumber,  pickedTeam, leagueID);
     // this.db.collection('game'+this.dayString).add({
     // GameID: GameID });
 }

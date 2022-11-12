@@ -13,7 +13,7 @@
             ngModel 
             name="TeamNo"  
             class="example-margin"
-            (change)= "teamClick(champFixture.fixtureID,  champFixture.homeTeamNumber ,champFixture.awayTeamNumber, champFixture.homeTeamNumber   )">        
+            (change)= "teamClick(champFixture.fixtureID,  champFixture.homeTeamNumber ,champFixture.awayTeamNumber, champFixture.homeTeamNumber, champFixture.leagueNumber )">        
               {{  champFixture.homeTeamName }} 
           </mat-checkbox>                                 
         </td>
@@ -24,7 +24,7 @@
             class="example-margin" 
             name="TeamNumber"
             
-            (change)= "teamClick(champFixture.fixtureID,  champFixture.homeTeamNumber ,champFixture.awayTeamNumber, champFixture.awayTeamNumber)"> 
+            (change)= "teamClick(champFixture.fixtureID,  champFixture.homeTeamNumber ,champFixture.awayTeamNumber, champFixture.awayTeamNumber, champFixture.leagueNumber )"> 
             {{  champFixture.awayTeamName }}                   
           </mat-checkbox>
         </td>

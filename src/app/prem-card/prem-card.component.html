@@ -1,9 +1,8 @@
      
       <mat-card>
           <mat-card-header> 
-            <mat-card-title> 
-              Premier League
-             <!-- {{Fixtures[0].leagueName }} -->
+            <mat-card-title *ngIf="Fixtures[0]"> 
+              {{Fixtures[0].leagueName }} 
             </mat-card-title>
           </mat-card-header>    
     <mat-card-content>
@@ -15,7 +14,7 @@
                   ngModel 
                   name="TeamNo"  
                   class="example-margin"
-                  (change)= "teamClick(Fixture.fixtureID,  Fixture.homeTeamNumber ,Fixture.awayTeamNumber, Fixture.homeTeamNumber)">          
+                  (change)= "teamClick(Fixture.fixtureID,  Fixture.homeTeamNumber ,Fixture.awayTeamNumber, Fixture.homeTeamNumber, Fixture.leagueNumber)">          
                     {{ Fixture.homeTeamName }} 
                 </mat-checkbox>                                 
               </td>
@@ -25,7 +24,7 @@
                   ngModel 
                   class="example-margin" 
                   name="TeamNumber"
-                  (change)= "teamClick(Fixture.fixtureID,  Fixture.awayTeamNumber ,Fixture.awayTeamNumber, Fixture.awayTeamNumber)"> 
+                  (change)= "teamClick(Fixture.fixtureID,  Fixture.awayTeamNumber ,Fixture.awayTeamNumber, Fixture.awayTeamNumber, Fixture.leagueNumber)"> 
                   {{ Fixture.awayTeamName }}   
                                    
                 </mat-checkbox>
@@ -36,3 +35,108 @@
     </mat-card>
 
 
+    <mat-card *ngIf="champFixtures[0]">
+      <mat-card-header> 
+        <mat-card-title> 
+          {{champFixtures[0].leagueName }}
+        </mat-card-title>
+      </mat-card-header>    
+<mat-card-content>
+ <table style="width:100%">
+      
+      <tr *ngFor="let champFixture of champFixtures">
+         <td>   
+            <mat-checkbox 
+              ngModel 
+              name="TeamNo"  
+              class="example-margin"
+              (change)= "teamClick(champFixture.fixtureID,  champFixture.homeTeamNumber ,champFixture.awayTeamNumber, champFixture.homeTeamNumber, champFixture.leagueNumber)">          
+                {{ champFixture.homeTeamName }} 
+            </mat-checkbox>                                 
+          </td>
+          <td> Vs</td>
+          <td>     
+            <mat-checkbox 
+              ngModel 
+              class="example-margin" 
+              name="TeamNumber"
+              (change)= "teamClick(champFixture.fixtureID,  champFixture.awayTeamNumber ,champFixture.awayTeamNumber, champFixture.awayTeamNumber, champFixture.leagueNumber)"> 
+              {{ champFixture.awayTeamName }}   
+                               
+            </mat-checkbox>
+          </td>
+      </tr>
+    </table> 
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="leagueOneFixtures[0]">
+  <mat-card-header> 
+    <mat-card-title> 
+      {{leagueOneFixtures[0].leagueName }}
+    </mat-card-title>
+  </mat-card-header>    
+ <mat-card-content>
+<table style="width:100%">
+  
+  <tr *ngFor="let leagueOneFixture of leagueOneFixtures">
+     <td>   
+        <mat-checkbox 
+          ngModel 
+          name="TeamNo"  
+          class="example-margin"
+          (change)= "teamClick(leagueOneFixture.fixtureID,  leagueOneFixture.homeTeamNumber ,leagueOneFixture.awayTeamNumber,leagueOneFixture.homeTeamNumber, leagueOneFixture.leagueNumber)">          
+            {{ leagueOneFixture.homeTeamName }} 
+        </mat-checkbox>                                 
+      </td>
+      <td> Vs</td>
+      <td>     
+        <mat-checkbox 
+          ngModel 
+          class="example-margin" 
+          name="TeamNumber"
+          (change)= "teamClick(leagueOneFixture.fixtureID,  leagueOneFixture.awayTeamNumber ,leagueOneFixture.awayTeamNumber, leagueOneFixture.awayTeamNumber, leagueOneFixture.leagueNumber)"> 
+          {{ leagueOneFixture.awayTeamName }}   
+                           
+        </mat-checkbox>
+      </td>
+  </tr>
+</table> 
+</mat-card-content> 
+</mat-card> 
+
+
+<mat-card *ngIf="this.leagueTwoFixtures[0]">
+  <mat-card-header> 
+    <mat-card-title> 
+      {{this.leagueTwoFixtures[0].leagueName }}
+    </mat-card-title>
+  </mat-card-header>    
+ <mat-card-content>
+<table style="width:100%">
+  
+  <tr *ngFor="let leagueTwoFixture of leagueTwoFixtures">
+     <td>   
+        <mat-checkbox 
+          ngModel 
+          name="TeamNo"  
+          class="example-margin"
+          (change)= "teamClick(leagueTwoFixture.fixtureID,  leagueTwoFixture.homeTeamNumber ,leagueTwoFixture.awayTeamNumber,leagueTwoFixture.homeTeamNumber, leagueTwoFixture.leagueNumber)">          
+            {{ leagueTwoFixture.homeTeamName }} 
+        </mat-checkbox>                                 
+      </td>
+      <td> Vs</td>
+      <td>     
+        <mat-checkbox 
+          ngModel 
+          class="example-margin" 
+          name="TeamNumber"
+          (change)= "teamClick(leagueTwoFixture.fixtureID,  leagueTwoFixture.awayTeamNumber ,leagueTwoFixture.awayTeamNumber, leagueTwoFixture.awayTeamNumber, leagueTwoFixture.leagueNumber)"> 
+          {{ leagueTwoFixture.awayTeamName }}   
+                           
+        </mat-checkbox>
+      </td>
+  </tr>
+</table> 
+</mat-card-content> 
+</mat-card> 

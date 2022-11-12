@@ -1,6 +1,6 @@
 export interface Fixture {
 
-    leagueID?: number
+    leagueNumber?: number
     fixtureID: string
     leagueName?:  string
     fixtureDescription?: string
@@ -9,6 +9,10 @@ export interface Fixture {
     awayTeamName?: string
     awayTeamNumber?: string
     pickedTeam?: string
+
+    
+    homeTeamScore?: string
+    awayTeamScore?: string
 
 
 }
