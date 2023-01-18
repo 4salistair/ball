@@ -6,11 +6,11 @@ import { DatePipe } from '@angular/common'
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
-  selector: 'app-prem-card',
-  templateUrl: './prem-card.component.html',
-  styleUrls: ['./prem-card.component.css']
+  selector: 'app-fixture-card',
+  templateUrl: './fixture-card.component.html',
+  styleUrls: ['./fixture-card.component.css']
 })
-export class PremCardComponent implements OnInit,OnDestroy {
+export class FixtureCardComponent implements OnInit,OnDestroy {
 
  Fixtures: Fixture [] = [];
  fixureSubscription: Subscription = new Subscription;
@@ -24,6 +24,11 @@ export class PremCardComponent implements OnInit,OnDestroy {
  leagueTwoFixtures: Fixture [] = [];
  leagueTwoFixureSubscription: Subscription = new Subscription;
 
+//
+pickedfixureSubscription: Subscription = new Subscription;
+pickedFixtures: Fixture [] = [];
+//
+
  toDateString: string | undefined
  fromDateString: string | undefined
  dayString : string | undefined 
@@ -36,20 +41,22 @@ export class PremCardComponent implements OnInit,OnDestroy {
     private apiservice: APIService,
     private db: AngularFirestore,
     public datepipe: DatePipe,
-  
+    
+
 
   ) { 
-
+   this.teamsAlreadypicked()
    
   }
 
   ngOnInit(): void {
   
-    // Today 
+    //Today 
     // this.dayString = 'Date'+this.datepipe.transform(Date(), 'yyyy-MM-dd');
     // this.toDateString = 'to='+this.datepipe.transform(Date(), 'yyyy-MM-dd');
     // this.fromDateString = 'from='+this.datepipe.transform(Date(), 'yyyy-MM-dd');
     
+    // next Saturday 
     const d = new Date() 
     this.daysUnilSaturday =  6 - d.getDay()
     this.nextSaturday  = new Date(d.setDate(d.getDate() + this.daysUnilSaturday ))
@@ -58,7 +65,7 @@ export class PremCardComponent implements OnInit,OnDestroy {
     const nextSaturdayFromDateString = 'from='+this.datepipe.transform( this.nextSaturday,'yyyy-MM-dd' )
    
 
-    this.fixureSubscription = this.apiservice.fixuresChanged$.subscribe(
+    this.fixureSubscription = this.apiservice.premFixuresChanged$.subscribe(
         fixture => {(this.Fixtures = fixture) })
     
 
@@ -71,19 +78,17 @@ export class PremCardComponent implements OnInit,OnDestroy {
               
     this.champFixureSubscription = this.apiservice.leaugeTwoFixuresChanged$.subscribe(
         fixture => {(this.leagueTwoFixtures = fixture)} )
-      
-              
-           
-          
-          
+    
 
-  
 
       this.apiservice.apiCall('league=39', 'season=2022', nextSaturdayFromDateString  , nextSaturdayToDateString  )
-      this.apiservice.apiCall('league=40', 'season=2022', nextSaturdayFromDateString  , nextSaturdayToDateString  )
-      this.apiservice.apiCall('league=41', 'season=2022', nextSaturdayFromDateString  , nextSaturdayToDateString  )
+      this.apiservice.apiCall('league=40', 'season=2022', nextSaturdayFromDateString  , nextSaturdayToDateString   )
+      this.apiservice.apiCall('league=41', 'season=2022', nextSaturdayFromDateString  , nextSaturdayToDateString   )
       this.apiservice.apiCall('league=42', 'season=2022', nextSaturdayFromDateString  , nextSaturdayToDateString  )
    
+      
+
+
   }
 
   ngOnDestroy(): void {
@@ -98,7 +103,13 @@ export class PremCardComponent implements OnInit,OnDestroy {
       
     this.apiservice.teamClick(GameID, homeTeamNumber , awayTeamNumber, pickedTeam, leagueID);
   
-    }
+  }
+
+  teamsAlreadypicked(){
+    this.pickedfixureSubscription = this.apiservice.trackedFixturesChanged$.subscribe(
+      fixture => { ( this.pickedFixtures = fixture ) })
+    this.apiservice.getGameIDs()
+  }
 }
 
       // import { AnyCatcher } from 'rxjs/internal/AnyCatcher';

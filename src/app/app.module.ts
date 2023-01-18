@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APIService } from './api.service';
-import { PremCardComponent } from './prem-card/prem-card.component';
+import { FixtureCardComponent } from './fixture-card/fixture-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material.model';
@@ -18,8 +18,9 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { collection } from '@firebase/firestore';
 import { DatePipe } from '@angular/common';
-import { ChampCardComponent } from './champ-card/champ-card.component';
 import { ScoresCardComponent } from './scores-card/scores-card.component';
+import { FixturePipe } from './fixture-pipe';
+import { NavigateComponent } from './navigate/navigate.component'
 
 // import { AngularFireModule } from '@angular/fire';
 // import { AngularFirestoreModule, provideFirestore,getFirestore } from '@angular/fire/firestore';
@@ -31,9 +32,10 @@ import { ScoresCardComponent } from './scores-card/scores-card.component';
 @NgModule({
   declarations: [
     AppComponent,
-    PremCardComponent,
-    ChampCardComponent,
-    ScoresCardComponent
+    FixtureCardComponent,
+    ScoresCardComponent,
+    FixturePipe,
+    NavigateComponent
   ],
   imports: [
    

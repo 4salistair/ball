@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PremCardComponent } from './prem-card.component';
+import { PremCardComponent } from './fixture-card.component';
 
 describe('PremCardComponent', () => {
   let component: PremCardComponent;

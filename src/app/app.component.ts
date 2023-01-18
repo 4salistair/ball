@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { APIService } from './api.service'; 
 import { Fixture  } from './fixture.model';
@@ -13,16 +13,20 @@ import { Fixture  } from './fixture.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit,OnDestroy {
 
   
 title = 'Ball';
 
+
+// subscription returns fixture meta data from the datastore
 pickedfixureSubscription: Subscription = new Subscription;
 pickedFixtures: Fixture [] = [];
 
-numberOfTheDay: number | undefined
-isSaturdayAt3: boolean | undefined
+// subscription used for logic to detemine if 3pm on Saturday 
+  //**  numberOfTheDay: number | undefined
+  //**  isSaturdayAt3: boolean | undefined
+
 
  constructor(   
 
@@ -33,27 +37,32 @@ isSaturdayAt3: boolean | undefined
 
 	ngOnInit() {
 
-    const d = new Date() 
-    const day = d.getDay()
-    let hour = d.getHours()
 
-    if((d.getDay() === 6 && d.getHours() >= 15) && (d.getDay() === 6 && d.getHours() < 18  ) )
-      { this.isSaturdayAt3 = true }
-    
-    
+  // subscribes to tracked fixture
     this.pickedfixureSubscription = this.apiservice.trackedFixturesChanged$.subscribe(
       fixture => { ( this.pickedFixtures = fixture ) 
-       
-      if( this.isSaturdayAt3){
-        setInterval(() => {           
-             this.apiservice.getLastestResult([...this.pickedFixtures]) 
-        }, 60000);
-       }
       })
-                     
+
+
+  // calls the finction that pull the tracked fixtures
     this.apiservice.getGameIDs()
 
+      
+  // executes every 60 secs 
+  // setInterval(() => {   
+          
+            //  console.log('this.pickedFixtures every 6 seconds')  
+            //  console.log(this.pickedFixtures )   
+
+    // passes fixuture meta data to the results function 
+             this.apiservice.getLastestResult([...this.pickedFixtures]) 
+  //  }, 60000);
+    //  }
+   
+                     
+   
   }
+
 
   ngOnDestroy(): void {
 
@@ -61,9 +70,11 @@ isSaturdayAt3: boolean | undefined
 
   }
 
+
+
   routeTest( ) {
 
-    this.apiservice.clickScores(this.pickedFixtures)
+  //  this.apiservice.clickScores(this.pickedFixtures)
 
   }
 
@@ -74,6 +85,21 @@ isSaturdayAt3: boolean | undefined
 function If() {
   throw new Error('Function not implemented.');
 }
+
+
+  // Logic used to determine if 3PM saturday needs replacing with date picker.
+    //** const d = new Date() 
+    //** const day = d.getDay()
+    //** let hour = d.getHours()
+
+    //** if((d.getDay() === 6 && d.getHours() >= 15) && (d.getDay() === 6 && d.getHours() < 18  ) )
+    //**  { this.isSaturdayAt3 = true }
+    
+      
+
+  // subscription returns fixture meta data from the datastore
+
+
 // scoreSubscription: Subscription = new Subscription;
 // Scores: Fixture [] = [];
 

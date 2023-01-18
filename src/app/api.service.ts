@@ -15,67 +15,87 @@ import { environment } from 'src/environments/environment';
   })
   
   export class APIService {
-   
+  
+  
   apiBaseSting: any;
   
+  // used to carry fixture detais from the API return onto the array pushed out by subscription 
   fixureMapArray: Fixture | undefined
   
   
+  // initises arrays and subject for fixture subscripton for each league
   Fixures: Fixture[] = [];
+
+  premFixures: Fixture [] = [];
   champFixures: Fixture [] = [];
   leaugeOneFixures: Fixture [] = [];
   leaugeTwoFixures: Fixture [] = [];
 
-
-  fixuresChanged$ = new Subject<any []>();
+  premFixuresChanged$ = new Subject<any []>();
   champFixuresChanged$ = new Subject<any []>();
   leaugeOneFixuresChanged$ = new Subject<any []>();
   leaugeTwoFixuresChanged$ = new Subject<any []>();
+  //
+  
+  // used to carry scores details from the API return onto the array pushed out by subscription 
+  scoreMapArray: Fixture | undefined; 
 
-  scoreMapArray!: Fixture; 
-  Scores: Score[] = [];
+ // not sure about this could be deleted
+ // Scores: Score[] = [];
 
+ // used in getGamesIDs function to build string to get GameIDs for date
   dayString: string | undefined
 
+
+// used in the getGamesIDs function to asign tracked fixtures and push out via trackedFixture subject
   trackedFixtures: Fixture[] = [];
   trackedFixturesChanged$ = new Subject<any []>();
-  
+
+
+// used in getLastestResult to assign latest score to a fixture array push out via scoreChange subject
+  latestScores:  Fixture[] = [];
   scoresChanged$ = new Subject<any []>();
 
-  latestScore: Score[] = [];
-  latestScores:  Fixture[] = [];
 
-  clickscoresChanged$ = new Subject<Fixture []>();
-  scoresTestChanged$ = new Subject<number>();
+ // latestScore: Score[] = [];
+ // latestScores:  Fixture[] = [];
+
+
+  // clickscoresChanged$ = new Subject<Fixture []>();
+  // scoresTestChanged$ = new Subject<number>();
   
 
   constructor(  
                 private http: HttpClient,
                 public datepipe: DatePipe,
-                private db: AngularFirestore,
-                
-               
+                private db: AngularFirestore,           
     ) {}
     
 
+
+
+
+    // Returns fixtures for given League in a season by date range 
+
     apiCall(leagueID:  string, season: string, from: string, to: string  ): void { 
-        
+    
+    // builds API sting 
       this.apiBaseSting = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?'
             let headers = new HttpHeaders({    
                     'x-rapidapi-host': environment.footballAPI.host,
                     'x-rapidapi-key':  environment.footballAPI.key
             })
-          
-
-    const apiFullString = this.apiBaseSting+'&'+leagueID+'&'+season+'&'+from+'&'+to
+      
+     // adds params from function to base string and calls API      
+      const apiFullString = this.apiBaseSting+'&'+leagueID+'&'+season+'&'+from+'&'+to
            this.http.get<any>( apiFullString, {  
      
                    headers: headers
 
             }).subscribe(data => {    
 
-          
-
+  
+      // takes data from the API sub and map each fixure to Fixture model and pushes to Fixures array.      
             data.response.forEach( (element: any) => {
               this.fixureMapArray = {
 
@@ -92,22 +112,24 @@ import { environment } from 'src/environments/environment';
             })
 
 
-
+        // works out the league and used the right subscription to push the fixtures for the league      
         if(this.Fixures[0]){
 
          if(this.Fixures[0].leagueNumber === 39 ){
 
-             this.fixuresChanged$.next([...this.Fixures]);    
+             this.premFixures = this.Fixures
+             this.premFixuresChanged$.next([...this.premFixures]);    
              this.Fixures = []
-          
+             this.premFixures = []
+             
+
           }
             
           if (this.Fixures[0] && this.Fixures[0].leagueNumber === 40 ) {
             
                   this.champFixures = this.Fixures
-                  this.Fixures = []
-                
                   this.champFixuresChanged$.next([...this.champFixures]);
+                  this.Fixures = []
                   this.champFixures = []
           } 
 
@@ -136,6 +158,9 @@ import { environment } from 'src/environments/environment';
     }
 
 
+    // pulls the meta data for the Fixtures picked today.
+    // uses trackedFixtures to push out via trackedFixturesChanged$ subscription 
+        
     getGameIDs(): void {
 
       const dayString = 'gameDate'+ this.datepipe.transform(Date(), 'yyyy-MM-dd');
@@ -146,7 +171,7 @@ import { environment } from 'src/environments/environment';
       return docData.map(doc => {
         const  data  = doc.payload.doc.data() as  Fixture
       return {
-        fixtureID: doc.payload.doc.id,
+        fixtureID:  data.fixtureID ,
         homeTeamNumber: data.homeTeamNumber,
         awayTeamNumber: data.awayTeamNumber,
         leagueNumber: data.leagueNumber,
@@ -159,7 +184,8 @@ import { environment } from 'src/environments/environment';
       )
       .subscribe((fixture: Fixture[]) => {
 
-      
+        //  console.log('this.trackedFixtures from gameIDs call' )
+        //  console.log(this.trackedFixtures )
          this.trackedFixtures   =  fixture;
          this.trackedFixturesChanged$.next([...this.trackedFixtures ]);
         
@@ -167,82 +193,96 @@ import { environment } from 'src/environments/environment';
        });
     }
 
-
+    
+    // takes a Fixture array, call 
     getLastestResult( fixture: Fixture[]) {
-  
+       
+      // is this required???
+      this.latestScores = [];
+      
       this.apiBaseSting = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?'
       let headers = new HttpHeaders({
 
-               'x-rapidapi-host': environment.footballAPI.host,
-               'x-rapidapi-key':  environment.footballAPI.key
+        'x-rapidapi-host': environment.footballAPI.host,
+        'x-rapidapi-key':  environment.footballAPI.key
+              
        })
-       
+      
+       // for each fixture in array calls API
+       // maps fixture and pushes onto latest score array 
        fixture.forEach( (element: any) => 
         { 
           const apiFullString = this.apiBaseSting +
-                          'league=' + element.leagueNumber +
-                          '&' +
-                          'season=2022' +
-                          '&' +
-                          'team=' + element.pickedTeam +
-                          '&last=1'
- 
-
+    
+                          'id=' + element.fixtureID
+                          
           this.http.get<any>( apiFullString, {  
  
           headers: headers
 
         })
         .subscribe(data => {    
-
+      
         data.response.forEach( (element: any) => 
 
           { 
           this.scoreMapArray = 
             { 
-              fixtureID: element.fixtureID,
+              fixtureID: element.fixture.id ,
               homeTeamName: element.teams.home.name,
-              homeTeamScore: element.goals.home,
+              homeTeamScore:  element.goals.home,
               awayTeamName: element.teams.away.name,
               awayTeamScore: element.goals.away,
               pickedTeam: element.pickedTeam
             }
+          
+          this.latestScores.push(this.scoreMapArray);
+          // console.log('this.scoreMapArray')
+          // console.log(this.scoreMapArray)
 
-          this.latestScores.push( this.scoreMapArray);
-      
+
           })
         }) 
 
         })
+       console.log('this.latestScores')
+       console.log(this.latestScores)
+
+     
+      
+
+      //this.latestScores = fixture;
 
        this.scoresChanged$.next(this.latestScores);
-       this.clickscoresChanged$.next([...this.latestScores])
-       this.latestScores = []
+      
+     
+     
+      //  console.log(this.latestScores)
+     //  this.clickscoresChanged$.next([...this.latestScores])
+    
 
     }
 
   
-  
+    // pushes a selected fixture onto data collection, for todays date.
     teamClick(GameID:string,  homeTeamNumber:string , awayTeamNumber: string, pickedTeam: string, leagueNumber: string): void {
-
-    
+     
      this.dayString = 'Date'+this.datepipe.transform(Date(), 'yyyy-MM-dd');
 
         this.db.collection('game'+this.dayString).add({
-         GameID: GameID, 
+         fixtureID: GameID, 
          homeTeamNumber: homeTeamNumber,
          awayTeamNumber: awayTeamNumber,
          pickedTeam:  pickedTeam,
          leagueNumber: leagueNumber
-  
         });
     }
 
 
 
-  clickScores(clicksScores: Fixture[]) {
-    this.getLastestResult([...clicksScores]) 
-  }
+  // clickScores(clicksScores: Fixture[]) {
+  //   this.getLastestResult([...clicksScores]) 
+  // }
 
 }
 

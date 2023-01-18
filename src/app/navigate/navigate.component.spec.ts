@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChampCardComponent } from './champ-card.component';
+import { NavigateComponent } from './navigate.component';
 
-describe('ChampCardComponent', () => {
-  let component: ChampCardComponent;
-  let fixture: ComponentFixture<ChampCardComponent>;
+describe('NavigateComponent', () => {
+  let component: NavigateComponent;
+  let fixture: ComponentFixture<NavigateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChampCardComponent ]
+      declarations: [ NavigateComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChampCardComponent);
+    fixture = TestBed.createComponent(NavigateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

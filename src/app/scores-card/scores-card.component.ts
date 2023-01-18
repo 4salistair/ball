@@ -25,11 +25,17 @@ constructor(
 
   ngOnInit(): void {
 
+
     this.scoreSubscription = this.apiservice.scoresChanged$.subscribe(
     fixture => {(this.Scores = fixture)})
-  }
+  
+
+      
+   }
+
 
   ngOnDestroy(): void {
+
 
     this.scoreSubscription.unsubscribe 
 
